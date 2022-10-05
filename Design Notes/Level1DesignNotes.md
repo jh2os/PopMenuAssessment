@@ -58,25 +58,28 @@ Complex Types:
   * Calories for this portion (text)
 
 
-* Flare (string):  ?A comma separated list of references to flare objects?
-* Notes (string): ?A comma separated list of references to Notes?
+* MenuStickers (object hash): collection of MenuStickers that apply to item
 
-**Note: A Flare and Notes class will have to be created.**
+>**Note: A Flare and Notes class will have to be created.**
+>
+>**Update: on second thought menu flare and menu notes can be in the same model and you could just flag them as note/flare/etc... This also allows for adding additional data types**
+>
+>
+>#### ~~~MenuFlare: (class):~~~
+>
+>~~Menu Flare are icons or flags that can be applied to MenuItems such as Gluten Free, Vegan, >Specials, Favorites ect...~~
+>
+>#### ~~~MenuNotes: (class)~~~
+>~~Menu notes will contain all the footnotes that are printed at the bottom of menus.~~
 
-#### MenuFlare: (class):
-> Menu Flare are icons or flags that can be applied to MenuItems such as Gluten Free, Vegan, Specials, Favorites ect... They should contain a unique identifier, A text description, and optional icon/image
+#### MenuSticker
 
-Basic Data:
-* Description (text)
-* Image (image file name or emoji for this exercise)
-
-
-#### MenuNotes: (class)
->Menu notes will contain all the footnotes that are printed at the bottom of menus.
+> A catchall data class for applying image/key stickers and notes to a menu item like Vegan, Gluten Free, Hot Seller, and food warning notes. See note and update above ^
 
 Basic Data:
 * Footnote text (text)
-* Footnote character (text) (e.g. † ‡ *)
+* Footnote symbol/image (text) (e.g. † ‡ *, 🌾, "images/icon.svg" )
+* category name (text) - keeping this just text allows for extension in the future
 
 
 #### Menu: (class)
@@ -96,9 +99,25 @@ __*There could be a level of abstraction between the idea of the "Menu" and the 
 
 ## Class specifications
 
-#### class MenuFlare
+#### class MenuSticker
+* name
+  * about: This text is necessary for generating key for icons and food warnings
+  * type: String
+  * required: yes
+* icon
+  * about: These could be emojis, daggers, image file names ect...
+  * type: string
+  * required: yes
+* category
+  * about: keeping this as text seems like the best option. Through the front end you could make it a quick select option based on unique values, or break them up into different ui elements when managing the list of these. Different menus would have different demands. Without knowing the exact specifications, I am building this in as generic of a way possible.
+  * type: string
+  * required: yes - this may be overkill for some menus but seems like the best option.
 
-#### class MenuNotes
+`rails generate model MenuSticker name:string, icon:string, category:string`
+
+    validates :name, presence: true
+    validates :icon, presence: true
+    validates :category, presence: true
 
 #### class MenuItem
 
