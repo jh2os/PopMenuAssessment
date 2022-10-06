@@ -10,7 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_06_045611) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_06_194611) do
+  create_table "menu_items", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.text "images"
+    t.text "menuStickers"
+    t.integer "menu_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["menu_id"], name: "index_menu_items_on_menu_id"
+  end
+
   create_table "menu_stickers", force: :cascade do |t|
     t.string "name"
     t.string "icon"
@@ -28,5 +39,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_06_045611) do
     t.index ["parent_menu_id"], name: "index_menus_on_parent_menu_id"
   end
 
+  add_foreign_key "menu_items", "menus"
   add_foreign_key "menus", "menus", column: "parent_menu_id"
 end

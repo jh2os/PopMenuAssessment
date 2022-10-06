@@ -38,7 +38,7 @@ ___
 
 ___
 ## Level 1 Object ideation
-#### MenuItem: (class):
+#### MenuItem: (model):
 
 >    MenuItem is to hold all information regarding a food item. Name, description, an image (or multiples?), portion sizes and prices, calorie information, special identifiers (hot seller, GF, Vegan, etc...), and footnotes (meat warning, egg warning, etc..).
 
@@ -50,29 +50,25 @@ Basic Data Types:
 Complex Types:
 * Images (array)
   * ImageFileName (text)
-
-
-* Portions (array)
-  * Price (number)
-  * Portion size (text)
-  * Calories for this portion (text)
-
-
+* ~~Portions (array) * Price (number) * Portion size (text) * Calories for this portion (text) ~~
 * MenuStickers (object hash): collection of MenuStickers that apply to item
 
+Links:
+  * item_info (has_many) ItemInfo children (price, portion, calories)
+  * Menu belongs_to optional parent
 >**Note: A Flare and Notes class will have to be created.**
 >
 >**Update: on second thought menu flare and menu notes can be in the same model and you could just flag them as note/flare/etc... This also allows for adding additional data types**
 >
 >
->#### ~~~MenuFlare: (class):~~~
+>#### ~~~MenuFlare: (model):~~~
 >
 >~~Menu Flare are icons or flags that can be applied to MenuItems such as Gluten Free, Vegan, >Specials, Favorites ect...~~
 >
 >#### ~~~MenuNotes: (class)~~~
 >~~Menu notes will contain all the footnotes that are printed at the bottom of menus.~~
 
-#### MenuSticker
+#### MenuSticker: (model)
 
 > A catchall data class for applying image/key stickers and notes to a menu item like Vegan, Gluten Free, Hot Seller, and food warning notes. See note and update above ^
 
@@ -82,19 +78,27 @@ Basic Data:
 * category name (text) - keeping this just text allows for extension in the future
 
 
-#### Menu: (class)
+#### Menu: (model)
 > Menu possibly contains reference to a list of other menus (category). If there are no more categories then it would contain selected menu items (MenuItem). It can also contain description information
 
 Basic Data:
 * Menu Description
 * Parent
 
-Complex Types:
-* Sub-menus (array) [Menu]
-* Menu Items (array) [MenuItem]
+Links:
+* Submenus (menu) - the submenus below the current menu
+* Menu Items (menu_item) - Items that show up at this menu level
 
 
 __*There could be a level of abstraction between the idea of the "Menu" and the categories/sub-menus. It would offer the ability to manage MenuFlare and MenuNotes at the top level of a menu. In thinking about possible front-end implementations of managing a menu, I believe the abstraction can be largely resolved through a separate menu interface and by possibly adding them from the menuItem level. By keeping the notes and flare menu agnostic it would allow for global implementations across different menus like a drink or desert menu. So the top menu is actually just another instance of a sub-menu with no parent.*__
+
+#### ItemInfo: (model)
+  * Price (float)
+  * Portion (string)
+  * Calories (string)
+
+links:
+  * Menu Item (menu_item) parent
 
 
 ## Class specifications
@@ -102,7 +106,7 @@ __*There could be a level of abstraction between the idea of the "Menu" and the 
 #### class MenuSticker
 * name
   * about: This text is necessary for generating key for icons and food warnings
-  * type: String
+  * type: text
   * required: yes
 * icon
   * about: These could be emojis, daggers, image file names ect...
@@ -113,12 +117,67 @@ __*There could be a level of abstraction between the idea of the "Menu" and the 
   * type: string
   * required: yes - this may be overkill for some menus but seems like the best option.
 
-`rails generate model MenuSticker name:string, icon:string, category:string`
+`rails generate model MenuSticker name:string icon:string category:string`
 
     validates :name, presence: true
     validates :icon, presence: true
     validates :category, presence: true
 
+
+#### class ItemInfo
+  * menuItem
+    * about: Reference to MenuItem ID
+    * type: references
+    * required: yes
+  * price
+    * about: Price information for selected menu item's portion. If there is only one portion then there only needs to be one ItemInfo assigned to the MenuItem
+    * type: float
+    * required: yes
+  * portion
+    * about: Just some text describing what portion is associated with the price. No validation required because portion sizes can be small, medium, half slab, jumbo, 2 dogs, etc...
+    * type: string
+    * required: no
+  * calories
+    * about: a number of places offer calorie information, so better to just include it
+    * type: string
+    * required: no
+
+`rails generate model ItemInfo menu_item:references price:float portion:string calories:string`
+
 #### class MenuItem
+* name
+  * about: This is the name of the food item as it appears on the menu
+  * type: string
+  * required: yes
+* description
+  * about: This is the description that will show for each menu item
+  * type: text
+  * required: no - Some menu items do not need any extra description
+* ~~~details~~~
+  * ~~about: A serialized set of information about the product price, portions, calories. If worked into a cart system the cart would take on the menu item id and option array index for price. It keeps price data server-side to protect against client-side modification~~ note: these will be a child relation to menuItem
+
+  * type: text
+  * required: Yes. --There should be some extra validation to ensure there is at least one price
+* images
+  * about: serialized list of image files. (this could be extended out to have ruby handle images as objects so they could have multiple sizes and insert cdn security, etc... This would mean it would be a serialized list of image object id's)
+  * type: text
+  * required: No
+* menuStickers
+  * about: serialized list of sticker objects to display on menu item.
+  * type: text
+  * required: No
+
+`rails generate model MenuItem name:string description:text details:text images:text menuStickers:text`
+
+    validates :name, presence: true
+    validates :details, presence: true
 
 #### class Menu
+
+`rails generate model MenuSticker name:string icon:string category:string`
+
+`rails generate model Menu name:string description:text parent_menu:references`
+
+`rails generate model MenuItem name:string description:text images:text menuStickers:text menu:references`
+
+`rails generate model ItemInfo menu_item:references price:float portion:string calories:string`
