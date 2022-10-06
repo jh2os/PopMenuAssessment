@@ -10,13 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_05_175204) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_06_045611) do
   create_table "menu_stickers", force: :cascade do |t|
-    t.text "name"
+    t.string "name"
     t.string "icon"
     t.string "category"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  create_table "menus", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.integer "parent_menu_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["parent_menu_id"], name: "index_menus_on_parent_menu_id"
+  end
+
+  add_foreign_key "menus", "menus", column: "parent_menu_id"
 end
