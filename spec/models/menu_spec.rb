@@ -1,8 +1,8 @@
 require 'rails_helper'
-require 'pp'
 
 RSpec.describe Menu, type: :model do
   # Basic data layout for a menu ===============================================
+
   let(:mainmenu) { Menu.create(:name => "Main Menu") }
   let(:category1) { Menu.create(:name => "submenu1", :parent_menu => mainmenu) }
   let(:subcategory1) { Menu.create(:name => "submenu1-1", :parent_menu => category1) }
@@ -11,6 +11,12 @@ RSpec.describe Menu, type: :model do
   let(:subcategory3) { Menu.create(:name => "submenu2-1", :parent_menu => category2) }
   let(:subcategory4) { Menu.create(:name => "submenu2-2", :parent_menu => category2) }
   let(:testmain) {Menu.find(mainmenu.id)}
+  let(:menus) {[mainmenu, category1, subcategory1, subcategory2, category2, subcategory3, subcategory4]}
+
+  # this function is imperitive for tests to reload the association for child relations
+  def checkValid(modelarray)
+    modelarray.all?{|x| x.valid?}
+  end
 
   # Check if record can be made and is saved to the database====================
   describe "can not create record" do
@@ -32,6 +38,9 @@ RSpec.describe Menu, type: :model do
       expect(category1.valid?).to eql(true)
       expect(Menu.find(category1.id).name).to eql("submenu1")
     end
+    it "not all records valid" do
+
+    end
   end
 
   # Check parent-child relation/access =========================================
@@ -43,23 +52,21 @@ RSpec.describe Menu, type: :model do
       expect(Menu.find(category1.id).parent_menu).to eql(mainmenu)
       expect(Menu.find(subcategory3.id).parent_menu).to eql(category2)
     end
+
     it "return list of children" do
       # Have to run these to properly or have to access variables to load for test
-      # in doing this though, am I creating
-      expect(mainmenu.valid?).to eql(true)
-      expect(category1.valid?).to eql(true)
-      expect(category2.valid?).to eql(true)
-
+      #expect(mainmenu.valid? && category1.valid? && category2.valid? ).to eql(true)
+      expect(checkValid(menus)).to eql(true)
       expect(mainmenu.sub_menus.to_ary).to eql([category1, category2])
-      expect(category2.sub_menus.to_ary).to eql([])
+      expect(category1.sub_menus.to_ary).to eql([subcategory1, subcategory2])
+      expect(subcategory1.sub_menus.to_ary).to eql([])
     end
   end
 
-  # Check updating values and parents ==========================================
   describe "updating should" do
-    try "change name" do
-      expect(mainmenu.update(:name => "The Menu")).to eql(false)
-      expect(Menu.find(mainmenu.id).name).to eql("The Msenu")
+    it "change name" do
+      expect(mainmenu.update(name: "The Menu")).to eql(true)
+      expect(Menu.find(mainmenu.id).name).to eql("The Menu")
     end
   end
 end
