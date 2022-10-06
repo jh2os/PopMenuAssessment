@@ -2,6 +2,7 @@ require 'rails_helper'
 require 'pp'
 
 RSpec.describe Menu, type: :model do
+  # Basic data layout for a menu ===============================================
   let(:mainmenu) { Menu.create(:name => "Main Menu") }
   let(:category1) { Menu.create(:name => "submenu1", :parent_menu => mainmenu) }
   let(:subcategory1) { Menu.create(:name => "submenu1-1", :parent_menu => category1) }
@@ -11,6 +12,7 @@ RSpec.describe Menu, type: :model do
   let(:subcategory4) { Menu.create(:name => "submenu2-2", :parent_menu => category2) }
   let(:testmain) {Menu.find(mainmenu.id)}
 
+  # Check if record can be made and is saved to the database====================
   describe "can not create record" do
     it "without name" do
       expect(Menu.create.valid?).to eql(false)
@@ -32,6 +34,7 @@ RSpec.describe Menu, type: :model do
     end
   end
 
+  # Check parent-child relation/access =========================================
   describe "linking should" do
     it "return nil if no parent exits" do
       expect(Menu.find(mainmenu.id).parent_menu).to eql(nil)
@@ -49,6 +52,14 @@ RSpec.describe Menu, type: :model do
 
       expect(mainmenu.sub_menus.to_ary).to eql([category1, category2])
       expect(category2.sub_menus.to_ary).to eql([])
+    end
+  end
+
+  # Check updating values and parents ==========================================
+  describe "updating should" do
+    try "change name" do
+      expect(mainmenu.update(:name => "The Menu")).to eql(false)
+      expect(Menu.find(mainmenu.id).name).to eql("The Msenu")
     end
   end
 end
