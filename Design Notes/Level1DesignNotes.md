@@ -156,8 +156,8 @@ links:
 * ~~~details~~~
   * ~~about: A serialized set of information about the product price, portions, calories. If worked into a cart system the cart would take on the menu item id and option array index for price. It keeps price data server-side to protect against client-side modification~~ note: these will be a child relation to menuItem
 
-  * type: text
-  * required: Yes. --There should be some extra validation to ensure there is at least one price
+  * ~~type: text~~
+  * ~~required: Yes. --There should be some extra validation to ensure there is at least one price~~ note: we'll allow non-priced items
 * images
   * about: serialized list of image files. (this could be extended out to have ruby handle images as objects so they could have multiple sizes and insert cdn security, etc... This would mean it would be a serialized list of image object id's)
   * type: text
