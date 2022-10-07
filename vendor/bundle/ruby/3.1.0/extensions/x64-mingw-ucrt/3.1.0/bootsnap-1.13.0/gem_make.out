@@ -1,0 +1,16 @@
+current directory: C:/Users/jh2os/dev/Ruby/PopMenuAssessment/PopMenuAssessment/vendor/bundle/ruby/3.1.0/gems/bootsnap-1.13.0/ext/bootsnap
+C:/Ruby31-x64/bin/ruby.exe -I C:/Ruby31-x64/lib/ruby/3.1.0 -r ./siteconf20221007-43916-r70rpp.rb extconf.rb
+creating Makefile
+
+current directory: C:/Users/jh2os/dev/Ruby/PopMenuAssessment/PopMenuAssessment/vendor/bundle/ruby/3.1.0/gems/bootsnap-1.13.0/ext/bootsnap
+make DESTDIR\= clean
+
+current directory: C:/Users/jh2os/dev/Ruby/PopMenuAssessment/PopMenuAssessment/vendor/bundle/ruby/3.1.0/gems/bootsnap-1.13.0/ext/bootsnap
+make DESTDIR\=
+generating bootsnap-x64-mingw-ucrt.def
+compiling bootsnap.c
+linking shared-object bootsnap/bootsnap.so
+
+current directory: C:/Users/jh2os/dev/Ruby/PopMenuAssessment/PopMenuAssessment/vendor/bundle/ruby/3.1.0/gems/bootsnap-1.13.0/ext/bootsnap
+make DESTDIR\= install
+/usr/bin/install -c -m 0755 bootsnap.so ./.gem.20221007-43916-hpqc47/bootsnap

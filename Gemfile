@@ -55,6 +55,7 @@ group :development, :test do
   # Testing Framework
   gem "ffi"
   gem "rspec-rails"
+  gem "shoulda-matchers"
 end
 
 group :development do
