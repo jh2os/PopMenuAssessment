@@ -9,6 +9,7 @@ pizzasmall:
   portion: "Small"
   calories: 230
   menu_item: pizza
+  menu: two
 
 pizzamedium:
   price: 2.23

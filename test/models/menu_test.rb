@@ -33,4 +33,22 @@ class MenuTest < ActiveSupport::TestCase
      # this feels excessive
      assert MenuItem.find(menu_items(:pizza).id).menu == nil
    end
+
+   test "it links to ItemInfo" do
+     assert menus(:two).item_infos.first.portion == "Small"
+   end
+
+   test "it nullifies ItemInfo links" do
+     itemInfoID = menus(:two).item_infos.first.id
+     menus(:two).destroy
+
+     assert ItemInfo.find(itemInfoID).menu == nil
+   end
+
+   test "it nullifies ItemInfo links from parent menu destruction" do
+     itemInfoID = menus(:two).item_infos.first.id
+     menus(:one).destroy
+
+     assert ItemInfo.find(itemInfoID).menu == nil
+   end
 end

@@ -23,4 +23,8 @@ class MenuItemTest < ActiveSupport::TestCase
         ItemInfo.find(id)
      end
    end
+
+   test "can get list of ItemInfo records dependent on condition of menu" do
+     assert menu_items(:pizza).item_infos.where(:menu_id => menus(:two).id).first.portion == "Small"
+   end
 end

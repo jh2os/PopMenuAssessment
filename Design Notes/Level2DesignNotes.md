@@ -4,7 +4,7 @@ ___
 Thinking about the implementations, these directions are a little confusing.
 * If a menu item can be on multiple menus of a Restaurant:
   * It implies different pricing between the items exist (like the difference between a lunch, dinner, happy hour, ect...).
-    * This could be handled with 2 many-to-many implementations. (Menu <-> MenuItem) and (Menu <-> ItemInfo).
+    * This could be handled with 2 many-to-many implementations. (Menu <-> MenuItem) and ~~(Menu <-> ItemInfo)~~ Menu has many ItemInfo.
     * So when an item is added to a menu, you could select which pricing option to display on that menu.
 
 
@@ -13,12 +13,12 @@ Thinking about the implementations, these directions are a little confusing.
     * this could be handled via a has_many relation  Restaurant has_many:MenuItem.
       * However this limits the ability to have the same item being used on multiple restaurants (which isn't listed as a requirement because "a Restaurant" but feels like it would be an important option for a menu manager to have. It reduces the amount of work for the person managing it where they do not have to recreate the item for each restaurant/location")
     * but with MenuItem's name being unique this means that in managing the menuItems it is probably necessary to have two different name fields.
-      * Name: a unique name for the MenuItem that signifies which restaurant e.g. "Bob's Pizza" "Larry's Pizza"
+      * Name: a unique name for the MenuItem that signifies which restaurant e.g. "Bob's Pizza" "Larry's Pizza" bobs_pizza Larrys_pizza
       * DisplayName: a non-unique name that is displayed on the consumer side menu e.g. "Pizza"
 
 So the best solution seems to be adding a field to MenuItem for a display name, and making the name field unique.
 
-If menu items need to be managed in the backend dependent on the restaurant a many to many relation can be made(as to not rely on strings for queries), but for the time being, I will wait to see the next step of the assessment to implement this if necessary.
+~~If menu items need to be managed in the backend dependent on the restaurant, a many to many relation can be made(as to not rely on strings for queries), but for the time being, I will wait to see the next step of the assessment to implement this if necessary.~~ A many to many relationship is necessary.
 
 ## Next steps:
 MenuItems currently only links to one Menu object.
@@ -29,16 +29,15 @@ Menu would also need to have a relation to ItemInfo to set the price options for
 
 ItemInfo will belong to one menu. In an environment when an end user would be able to edit the menu item, they could set all the prices for the different menus it belongs to in a single place.
 
-So a new model is required to hold the references because MenuItem can now belong to multiple menus MenuItem <-> Menu
+So a new model is required to hold the references because MenuItem can now belong to multiple menus MenuItem <-> Menu many to many through relationship
 
 `rails generate model MenuItemsList menu_item:references menu:references`
 
-And a new one for menu <-> ItemOptions to allow for selecting price options for their menu items which can appear over multiple menus
+ItemInfo needs a column to reference the menu it belongs to.
 
-`rails generate model MenuPrices menu:references item_info:references`
+`rails g migration AddMenuToItemInfo menu:references`
 
-
-Then Restaurant model (which for now I will leave basic as there are no requirements for restaurants other than containing menus)
+Then Restaurant model (which for now I will leave basic as there are no requirements for restaurants other than containing menus). It will has_many: menus
 
 `rails generate model Resaurant name:string`
 
