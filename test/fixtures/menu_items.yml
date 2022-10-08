@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# This model initially had no columns defined. If you add columns to the
+# model remove the "{}" from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+pizza:
+  name: "Pizza"
+  description: It's a good ol' pie
+  images: "pizza.jpg,pizza2.jpg"
+  menuStickers: "1,2"
+  menu: two
+spaghetii:
+  name: "spaghetii"
+  description: "it's your mom's spaghetii"
+  images: ""
+  menuStickers: ""
+  menu: two
+# column: value

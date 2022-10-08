@@ -27,7 +27,7 @@ MenuItems and Menu will need to have a many-to-many relationship. I think the Ha
 
 Menu would also need to have a relation to ItemInfo to set the price options for individual menus (regular vs happy hour etc.)
 
-ItemInfo it might be beneficial to have a backend note about why and where the price option exists. So adding a column would help clear confusion.
+ItemInfo will belong to one menu. In an environment when an end user would be able to edit the menu item, they could set all the prices for the different menus it belongs to in a single place.
 
 So a new model is required to hold the references because MenuItem can now belong to multiple menus MenuItem <-> Menu
 
@@ -48,27 +48,60 @@ Menus will need to have a parent restaurant.
 
 **compromise:**
 MenuOptions will only belong to one Menu. This means that in managing the menu, if a price changes they will need to change every instance of it. However if a list is displayed of all the different pricing options with the associated restaurant and menus it could be done from a single place in the UI. This reduces the design by not having to add one more relational model.
+Also the abstraction between MenuItem and ItemOptions leads to some oddities in calling for information to display, it's not terribly efficient but provides the easiest solution for displaying.
 
+    page : /billysresuarant
+
+    restaurant = Restaurant.find(name="billysresuarant")   
+    topmenu = restaurant.menus.find(:parent_menu_id => nil)
+
+    topsmenu.each do | m |
+      display m.name
+      display m.description
+
+      #display items
+      m.menu_items.each do | item |
+        display item.name
+        display item.description
+
+        #display price options
+        m.item_infos.find(:menu => m.id).each do | option |
+          display option.portion
+          display option.price
+        end
+      end
+    end
 
 
 Menu needs to relate to restaurant
 
-    class MenuItem
-      has_many :menu_links
-      has_many :menus, through: :menu_links
-    end
-
-    class menu_link
-      belongs_to :MenuItem
-      belongs_to :Menu
+    class Resaurant
+      has_many :menus
     end
 
     class Menu
-      has_many :menu_links
-      has_many :menu_items, through :menu_links
+      belongs_to  :restaurant
+      has_many    :sub_menus, class_name: 'Menu', foreign_key: "parent_menu_id", dependent: :destroy
+      belongs_to  :parent_menu, class_name: 'Menu', optional: true
+      validates   :name, presence: true
+      has_many    :menu_item_links
+      has_many    :menu_items, through :menu_links
+      has_many    :item_infos
+    end
+
+    class menu_item_link
+      belongs_to :menu_item
+      belongs_to :menu
+    end
+
+    class MenuItem
+      has_many :menu_item_links
+      has_many :menus, through: :menu_links
+      validates :name, presence: true
+
     end
 
     class item_info
       belongs_to :menu_item
-      belongs_to :menu
+      belongs_to :menu optional: true
     end
