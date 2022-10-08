@@ -39,10 +39,11 @@ ItemInfo needs a column to reference the menu it belongs to.
 
 Then Restaurant model (which for now I will leave basic as there are no requirements for restaurants other than containing menus). It will has_many: menus
 
-`rails generate model Resaurant name:string`
+`rails generate model Restaurant name:string`
 
 Menus will need to have a parent restaurant.
 `#db call for adding restaurant_id to menu model`
+`rails g migration AddRestToItemInfo menu:references`
 
 
 **compromise:**
@@ -74,7 +75,7 @@ Also the abstraction between MenuItem and ItemOptions leads to some oddities in 
 
 Menu needs to relate to restaurant
 
-    class Resaurant
+    class Restaurant
       has_many :menus
     end
 

@@ -7,6 +7,7 @@ class Menu < ApplicationRecord
   has_many :item_infos, dependent: :nullify
   has_many :sub_menus, class_name: 'Menu', foreign_key: "parent_menu_id", dependent: :destroy
   belongs_to :parent_menu, class_name: 'Menu', optional: true
+  belongs_to :restaurant
   validates :name, presence: true
 
 end

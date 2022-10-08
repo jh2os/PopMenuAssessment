@@ -4,19 +4,8 @@
 # model remove the "{}" from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one:
-  name: "one"
-  description: "There First Menu"
-  restaurant: :billysrestuarant
+billysrestuarant:
+  name: "Billy's Pizza Palace"
 
-two:
-  name: "two"
-  description: "A submenu"
-  parent_menu: one
-  restaurant: :billysrestuarant
-
-three:
-  name: "three"
-  description: "lowest menu"
-  parent_menu: two
-  restaurant: :billysrestuarant
+momsspaghet:
+  name: "Mom's Spaghet"

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_08_032653) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_08_044456) do
   create_table "item_infos", force: :cascade do |t|
     t.integer "menu_item_id", null: false
     t.float "price"
@@ -35,7 +35,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_08_032653) do
   end
 
   create_table "menu_stickers", force: :cascade do |t|
-    t.string "name"
+    t.text "name"
     t.string "icon"
     t.string "category"
     t.datetime "created_at", null: false
@@ -48,11 +48,20 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_08_032653) do
     t.integer "parent_menu_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "restaurant_id", null: false
     t.index ["parent_menu_id"], name: "index_menus_on_parent_menu_id"
+    t.index ["restaurant_id"], name: "index_menus_on_restaurant_id"
+  end
+
+  create_table "restaurants", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_foreign_key "item_infos", "menu_items"
   add_foreign_key "item_infos", "menus"
   add_foreign_key "menu_items", "menus"
   add_foreign_key "menus", "menus", column: "parent_menu_id"
+  add_foreign_key "menus", "restaurants"
 end
