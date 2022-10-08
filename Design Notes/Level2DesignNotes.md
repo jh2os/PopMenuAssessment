@@ -46,6 +46,11 @@ Menus will need to have a parent restaurant.
 `#db call for adding restaurant_id to menu model`
 `rails g migration AddRestToItemInfo menu:references`
 
+MenuItem will need to be unique in the database and validate
+
+
+  `rails generate migration add_index_to_menu_items name:uniq`
+
 
 **notes:**
 ItemOption will only belong to one Menu. This means that in managing the menu, if a price changes they will need to change every instance of it. However if a list is displayed of all the different pricing options with the associated restaurant and menus it could be done from a single place in the UI. This reduces the design by not having to add one more relational model.
