@@ -27,12 +27,15 @@ class MenuTest < ActiveSupport::TestCase
      end
    end
 
-   test "when destroyed, nullifies child MenuItems" do
-     assert menu_items(:pizza).menu.id == menus(:two).id
-     assert menus(:two).destroy
-     # this feels excessive
-     assert MenuItem.find(menu_items(:pizza).id).menu == nil
-   end
+   # This is no longer required.
+   #test "when destroyed, nullifies child MenuItems" do
+   #  assert menu_items(:pizza).menu.id == menus(:two).id
+   #  assert menus(:two).destroy
+   #  # this feels excessive
+   #   assert MenuItem.find(menu_items(:pizza).id).menu == nil
+   #end
+
+
 
    test "it links to ItemInfo" do
      assert menus(:two).item_infos.first.portion == "Small"

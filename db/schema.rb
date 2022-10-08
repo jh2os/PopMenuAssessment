@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_08_044456) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_08_052058) do
   create_table "item_infos", force: :cascade do |t|
     t.integer "menu_item_id", null: false
     t.float "price"
@@ -23,15 +23,22 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_08_044456) do
     t.index ["menu_item_id"], name: "index_item_infos_on_menu_item_id"
   end
 
+  create_table "item_links", force: :cascade do |t|
+    t.integer "menu_item_id", null: false
+    t.integer "menu_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["menu_id"], name: "index_item_links_on_menu_id"
+    t.index ["menu_item_id"], name: "index_item_links_on_menu_item_id"
+  end
+
   create_table "menu_items", force: :cascade do |t|
     t.string "name"
     t.text "description"
     t.text "images"
     t.text "menuStickers"
-    t.integer "menu_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["menu_id"], name: "index_menu_items_on_menu_id"
   end
 
   create_table "menu_stickers", force: :cascade do |t|
@@ -61,7 +68,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_08_044456) do
 
   add_foreign_key "item_infos", "menu_items"
   add_foreign_key "item_infos", "menus"
-  add_foreign_key "menu_items", "menus"
+  add_foreign_key "item_links", "menu_items"
+  add_foreign_key "item_links", "menus"
   add_foreign_key "menus", "menus", column: "parent_menu_id"
   add_foreign_key "menus", "restaurants"
 end

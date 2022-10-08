@@ -4,14 +4,14 @@
 # model remove the "{}" from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-pizza:
-  name: "Pizza"
-  description: It's a good ol' pie
-  images: "pizza.jpg,pizza2.jpg"
-  menuStickers: "1,2"
-spaghetii:
-  name: "spaghetii"
-  description: "it's your mom's spaghetii"
-  images: ""
-  menuStickers: ""
-# column: value
+link1:
+  menu: two
+  menu_item: pizza
+
+link2:
+  menu: two
+  menu_item: spaghetii
+
+link3:
+  menu: four
+  menu_item: spaghetii

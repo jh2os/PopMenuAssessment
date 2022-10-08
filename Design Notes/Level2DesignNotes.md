@@ -31,7 +31,7 @@ ItemInfo will belong to one menu. In an environment when an end user would be ab
 
 So a new model is required to hold the references because MenuItem can now belong to multiple menus MenuItem <-> Menu many to many through relationship
 
-`rails generate model MenuItemsList menu_item:references menu:references`
+`rails generate model ItemLink menu_item:references menu:references`
 
 ItemInfo needs a column to reference the menu it belongs to.
 
@@ -47,8 +47,8 @@ Menus will need to have a parent restaurant.
 
 
 **compromise:**
-MenuOptions will only belong to one Menu. This means that in managing the menu, if a price changes they will need to change every instance of it. However if a list is displayed of all the different pricing options with the associated restaurant and menus it could be done from a single place in the UI. This reduces the design by not having to add one more relational model.
-Also the abstraction between MenuItem and ItemOptions leads to some oddities in calling for information to display, it's not terribly efficient but provides the easiest solution for displaying.
+ItemOption will only belong to one Menu. This means that in managing the menu, if a price changes they will need to change every instance of it. However if a list is displayed of all the different pricing options with the associated restaurant and menus it could be done from a single place in the UI. This reduces the design by not having to add one more relational model.
+Also the abstraction between MenuItem and ItemOption leads to some oddities in calling for information to display, it's not terribly efficient but provides the easiest solution for displaying.
 
     page : /billysresuarant
 
@@ -84,19 +84,19 @@ Menu needs to relate to restaurant
       has_many    :sub_menus, class_name: 'Menu', foreign_key: "parent_menu_id", dependent: :destroy
       belongs_to  :parent_menu, class_name: 'Menu', optional: true
       validates   :name, presence: true
-      has_many    :menu_item_links
+      has_many    :item_links
       has_many    :menu_items, through :menu_links
       has_many    :item_infos
     end
 
-    class menu_item_link
+    class item_links
       belongs_to :menu_item
       belongs_to :menu
     end
 
     class MenuItem
-      has_many :menu_item_links
-      has_many :menus, through: :menu_links
+      has_many :item_links
+      has_many :menus, through: :item_links
       validates :name, presence: true
 
     end

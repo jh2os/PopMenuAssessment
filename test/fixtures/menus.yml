@@ -19,4 +19,9 @@ three:
   name: "three"
   description: "lowest menu"
   parent_menu: two
-  restaurant: :billysrestuarant
+  restaurant: billysrestuarant
+
+four:
+  name: "Mom's Menu"
+  description: "Moms menu"
+  restaurant: momsspaghet

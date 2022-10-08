@@ -1,6 +1,9 @@
 class MenuItem < ApplicationRecord
   has_many :item_infos, dependent: :destroy
 
-  belongs_to :menu, optional: true
+  # Menu links
+  has_many :item_links, dependent: :destroy
+  has_many :menus, through: :item_links
+
   validates :name, presence: true
 end

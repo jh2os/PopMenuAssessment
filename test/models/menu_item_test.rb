@@ -5,8 +5,8 @@ class MenuItemTest < ActiveSupport::TestCase
      assert menu_items(:pizza).name == "Pizza"
    end
 
-   test "can get menu" do
-     assert menu_items(:pizza).menu.name == "two"
+   test "can get all menu" do
+     assert menu_items(:spaghetii).menus.count == 2
    end
 
    test "can get price options" do
