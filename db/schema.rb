@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_08_052058) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_08_153734) do
   create_table "item_infos", force: :cascade do |t|
     t.integer "menu_item_id", null: false
     t.float "price"
@@ -39,6 +39,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_08_052058) do
     t.text "menuStickers"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_menu_items_on_name", unique: true
   end
 
   create_table "menu_stickers", force: :cascade do |t|

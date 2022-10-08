@@ -15,6 +15,7 @@ Thinking about the implementations, these directions are a little confusing.
     * but with MenuItem's name being unique this means that in managing the menuItems it is probably necessary to have two different name fields.
       * Name: a unique name for the MenuItem that signifies which restaurant e.g. "Bob's Pizza" "Larry's Pizza" bobs_pizza Larrys_pizza
       * DisplayName: a non-unique name that is displayed on the consumer side menu e.g. "Pizza"
+  * _I think without knowing the rest of the requirements it would save time and extra engineering if I simply added a unique index on the MenuItem name. If the requirement of menu items being different for different restaurants comes up, the previous solutions could be implemented with just adding a string column_
 
 So the best solution seems to be adding a field to MenuItem for a display name, and making the name field unique.
 
@@ -46,7 +47,7 @@ Menus will need to have a parent restaurant.
 `rails g migration AddRestToItemInfo menu:references`
 
 
-**compromise:**
+**notes:**
 ItemOption will only belong to one Menu. This means that in managing the menu, if a price changes they will need to change every instance of it. However if a list is displayed of all the different pricing options with the associated restaurant and menus it could be done from a single place in the UI. This reduces the design by not having to add one more relational model.
 Also the abstraction between MenuItem and ItemOption leads to some oddities in calling for information to display, it's not terribly efficient but provides the easiest solution for displaying.
 
