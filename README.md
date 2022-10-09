@@ -1,24 +1,15 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+To import json file data and see logging output run:
 
-Things you may want to cover:
+`rake popimport:loadfile`
 
-* Ruby version
+There are relational tests in "test/models".
 
-* System dependencies
+`rails test`
 
-* Configuration
+This is my first time working with rails, so I do not know all the systems and how unit testing is implemented within the framework. The models contain more relational data than actual logic so it seems like relational tests are required more than unit tests. However my development process heavily involved testing through code and through the Rails console. I have included my scratchpad of ideas and planning in the "Design Notes" folder.
 
-* Database creation
+Thanks for your time, and I look forward to speaking with you
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Johnathan Waters
